@@ -1,0 +1,51 @@
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+#content {
+    width: 100%;
+    height: 100%;
+    
+}
+
+#content img {
+    width: 100%;
+    height: 100%;
+}
+
+#content .downBtn {
+    position: absolute;
+    top: 37%;
+    width: 100%;
+    height: 5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    display: -webkit-flex;
+    -webkit-align-items: center;
+    -webkit-justify-content: center;
+}
+#content .downBtn img{
+    height: 2.8rem;
+    width: 40%;
+}
+#content .chatBtn {
+    position: absolute;
+    top: 82.5%;
+    width: 100%;
+    height: 5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    display: -webkit-flex;
+    -webkit-align-items: center;
+    -webkit-justify-content: center;
+}
+#content .chatBtn img{
+    height: 2.8rem;
+    width: 67%;
+}

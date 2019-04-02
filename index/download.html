@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head id="head">
+    <meta charset=UTF-8"UTF-8">
+    <title></title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="css/ios/app.min.css" tppabs="http://quannengplayer.com/css/ios/app.min.css" media="all">
+    <link rel="stylesheet" href="css/index.css" tppabs="http://quannengplayer.com/css/ios/app.min.css" media="all">
+    <script src="js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+</head>
+<body>
+    <div id="content" style="position:relative;" >
+        <img src="img/home_bg.jpg" />
+        <div class="downBtn" >
+            <img class="iosDownload" src="img/IOS_btn.png" @click="iosClick"/>
+            <img class="androidDownload" src="img/android_btn.png" style="margin-left: 1rem;" @click="androidClick"/>
+        </div>
+        <div class="chatBtn">
+            <img src="img/chat_btn.png" @click="chatClick"/>
+        </div>
+    </div>
+<script>
+    var app = new Vue({
+     el:'#content',
+     data:{},
+     methods:{
+         iosClick: function(){
+             alert("iosClick")
+         },
+         androidClick:function(){
+              alert("androidClick")
+         },
+         chatClick: function(){
+              alert("chatClick")
+         }
+     },
+     mounted: {}
+    })
+   
+</script>
+
+</body>
+</html>
