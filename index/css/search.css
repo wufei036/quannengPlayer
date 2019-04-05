@@ -1,0 +1,233 @@
+body, html {
+    width: 100%;
+    height: 100%;
+}
+#app, .Search {
+    width: 100%;
+    height: 100%;
+}
+.Search .header_title {
+    padding-top: 1.43rem;
+    width: 100%;
+    position: fixed;
+    text-align: center;
+    top: 0;
+    left: 0;
+    background: white;
+    height: 3.4rem;
+    line-height: 2.34rem;
+    margin-bottom: 0.53rem;
+    z-index: 999;
+    color: #fff;
+    border-bottom: solid 0.5px #6666664f;
+}
+.Search .header_title div {
+    display: inline-block;
+    color: black;
+}
+.Search .header_title .Search_input {
+    width: 75%;
+    height: 1.6rem;
+    border-radius: 1.6rem;
+    background: rgba(240, 241, 242, 1);
+    margin-left: 0.8rem;
+    position: relative;
+}
+.Search .header_title .Search_input img {
+    height: 0.85rem;
+    position: absolute;
+    left: 0.53rem;
+    top: 0.35rem;
+}
+.Search .header_title .Search_input .result {
+    position: absolute;
+    left: 0.53rem;
+    padding-top: 5px;
+}
+.Search .header_title .Search_input .mui-input-row {
+    position: absolute;
+    left: 2rem;
+    width: 80%;
+    height: 100%;
+    box-sizing: border-box;
+}
+.Search .header_title .Search_input .mui-input-row input {
+    padding-right: 12%;
+    padding-left: 40%;
+    margin: 0;
+    height: 100%;
+    font-size: 0.7rem;
+    border: none;
+    color: #a8a8a8;
+    vertical-align: super;
+    box-sizing: border-box;
+    background: rgba(240, 241, 242, 1);
+}
+.Search .header_title .Search_input .mui-input-row .mui-icon {
+    padding-top: 5px;
+}
+.Search .header_title .Search_back {
+    float: right;
+    width: 15%;
+    height: 1.6rem;
+    line-height: 1.6rem;
+    text-align: right;
+    font-size: 0.8rem;
+    box-sizing: border-box;
+    margin-right: 0.8rem;
+}
+.Search .Search_sousuo {
+    display: block;
+}
+.Search .Search_sousuo .Search_history {
+    padding: 0.5rem 0.8rem;
+}
+.Search .Search_sousuo .Search_history .Search_history_title {
+    height: 1.06rem;
+    padding-left: 0rem;
+    font-size: 0.85rem;
+    text-align: left;
+    margin-bottom: 1.06rem;
+}
+.Search .Search_sousuo .Search_history .Search_history_title p {
+    width: 50%;
+    line-height: 1.06rem;
+    display: inline-block;
+    color: #000;
+    font-size: 19px;  
+}
+.Search .Search_sousuo .Search_history .Search_history_title .delHis {
+  
+    float: right;
+}
+.Search .Search_sousuo .Search_history .Search_history_title .delHis span{
+     display: inline-block;
+     line-height: 1.06rem;
+     color: #000;
+     font-size: 13px;
+}
+.Search .Search_sousuo .Search_history .Search_history_title .delHis img{
+    margin-left: 5px;
+    height: 0.8rem;
+    float: right;
+    margin-top: 0.1rem;
+}
+
+.Search .Search_sousuo .Search_history .Search_Keyword {
+    text-align: left; 
+    overflow: hidden;
+}
+.Search .Search_sousuo .Search_history .Search_Keyword span {
+    display: inline-block;
+    font-size: 0.74rem;
+    padding: 0.3rem 0.53rem;
+    color: rgb(51,51,51);
+    background: rgb(245,245,245);
+    margin-right: 0.53rem;
+    margin-bottom: 0.53rem;
+}
+.Search .Search_sousuo .Search_history .Search_Keyword_hot {
+    text-align: left;
+}
+.Search .Search_sousuo .Search_history .Search_Keyword_hot .span {
+    display: inline-block;
+    width: 100%;
+    margin-right: 5%;
+    margin-bottom: 0.5rem;
+    font-size: 0.84rem;
+    color: rgb(51,51,51);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.Search .Search_sousuo .Search_history .Search_Keyword_hot .span span {
+    margin-right: 0.3rem;
+}
+.Search .Search_sousuo .Search_history .Search_Keyword_hot .span .hot {
+    color: rgb(240,98,146);
+}
+
+.Search .Search_sousuo .Search_history .Search_Keyword_hot .span .hotOne{
+     color: rgb(255,196,0);
+}
+
+.Search .Search_sousuo .Search_history .Search_Keyword_hot .span .hotTwo{
+     color: rgb(102,102,102);
+}
+.content {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    display: -webkit-flex;
+    -webkit-justify-content: flex-start;
+    -webkit-flex-wrap: wrap;
+    margin-top: 0.7rem;
+}
+.content .details {
+    width: 32.8%;
+    margin-left: 0.4%;
+}
+.content .details img {
+    width: 100%;
+    height: 10rem;
+}
+.content .details .details_content {
+    width: 100%;
+    height: auto;
+    padding-left: 7%;
+    padding-right: 12%;
+    padding-top: 2%;
+    padding-bottom: 10%;
+}
+.content .details .details_content .title {
+    color: #38383a;
+    font-size: 0.8rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.content .details .details_content .describe {
+    font-size: 0.7rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #6c6c6c;
+}
+@-webkit-keyframes mescrollFadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+@keyframes mescrollFadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+.mescroll-fade-in {
+    -webkit-animation: mescrollFadeIn .5s linear forwards;
+    animation: mescrollFadeIn .5s linear forwards;
+}
+[v-cloak] {
+    display: none;
+}
+
+/* 可以设置不同的进入和离开动画 */
+/* 设置持续时间和动画函数 */
+.slide-fade-enter-active {
+    transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-fade-leave-active {
+    transition: all .3s ease;
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active for below version 2.1.8 */ {
+    transform: translateX(10px);
+    opacity: 0;
+}

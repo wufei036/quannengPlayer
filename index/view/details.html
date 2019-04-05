@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>电影详情</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <link rel="stylesheet" href="../css/mui.min.css" type="text/css" charset="utf-8" />
+        <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
+        <link rel="stylesheet" href="../css/details.css" type="text/css" charset="utf-8" />
+        <link rel="stylesheet" href="../css/mescroll.min.css" type="text/css">
+    </head>
+    <body>
+        <div id="app" v-cloak>
+            <header class="header">
+                <div class="header_top">
+                    <img src="../img/logo.png" / class="logo">
+                    <img src="../img/search.png" class="search" @click="toSearch"/>
+                    <button type="button" class="mui-btn mui-btn-warning download" @click="downlaodApp">下载APP</button>
+                </div>
+            </header>
+            <div v-show="networkError || hasNoData" class="fake_player">
+                <div class="back" @click="backView">
+                    <span class="mui-icon mui-icon-back"></span>
+                </div>
+                <div class="img_player">
+                    <p>下载桔子影音APP</p>
+                    <p style="margin-top: 0.5rem;">即可观看完整版影片</p>
+                    <div class="groupBtn">
+                        <!-- <button type="button" class="mui-btn mui-btn-warning left" @click="">试看10分钟</button> -->
+                        <button type="button" class="mui-btn mui-btn-warning right" @click="downlaodApp">下载APP观看完整版</button>
+                    </div>
+                </div>
+            </div>
+            <div class="not_want_page" v-show="networkError || hasNoData">
+                <div v-show="!networkError && hasNoData" class="network_error" style="margin-bottom: 12rem;">
+                    <img class="not_want_img" src="../img/error_tip_img.png">
+                    <span class="tip">
+                        暂时没有数据
+                    </span>
+                </div>
+                <div v-show="networkError && !hasNoData" class="network_error" style="margin-bottom: 12rem;">
+                    <img class="not_want_img" src="../img/error_tip_img.png">
+                    <span class="network tip">
+                        当前网络好像有问题，请检查网络后刷新
+                    </span>
+                    <span class="refresh_btn" @tap="refresh">
+                        刷新
+                    </span>
+                </div>
+            </div>
+            <div v-show="!hasNoData && !networkError" id="mescroll" class="mescroll">
+                <div>
+                    <!-- start -->
+                    <div class="fake_player">
+                        <div class="back" @click="backView">
+                            <span class="mui-icon mui-icon-back"></span>
+                        </div>
+                        <div class="img_player">
+                            <p>下载桔子影音APP</p>
+                            <p style="margin-top: 0.5rem;">即可观看完整版影片</p>
+                            <div class="groupBtn">
+                                <!-- <button type="button" class="mui-btn mui-btn-warning left" @click="">试看10分钟</button> -->
+                                <button type="button" class="mui-btn mui-btn-warning right" @click="downlaodApp">下载APP观看完整版</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="Details">
+                        <div class="Details_all">
+                            <!-- <div class="Details_btn">
+                                <div>
+                                    <button type="button" class="mui-btn mui-btn-warning right" @click="">可试看10分钟，App内打开看完整影片</button>
+                                </div>
+                            </div> -->
+                            <div class="Details_box">
+                                <!-- 标题 -->
+                                <div class="Details_box_title">
+                                    <span class="box_title_name">
+                                        {{ asyncVideoName }}
+                                    </span>
+                                    <span class="box_title_intro" @click="gotoDes">
+                                        <span>简介</span>
+                                        <span class="mui-icon mui-icon-forward"></span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="video_intro">
+                                <p>{{asyncVideoSynopsis}}</p>
+                            </div>
+                            <div class="divline"> </div>
+                            <div class="guess">热门影片推荐</div>
+                            <div class="content">
+                                <div class="item" v-for="(item,index) in likeList.slice(0, 9)" :key="index" @click="clickSave(index,item)">
+                                    <img v-show="!item.picture_url" src="../img/smr.png">
+                                    <img v-if="item.picture_url" src="../img/smr.png" :imgurl="qnapi + item.picture_url">
+                                    <div class="details">
+                                        <p class="name">
+                                            {{ item.video_name }}
+                                        </p>
+                                        <div class="categories">
+                                            {{ item.plot_type_name }}
+                                        </div>
+                                        <span class="mui-ellipsis-2" style="color: rgba(154, 154, 154, 1);font-size: 13px;margin-top: 0.3rem;margin-bottom: 0.6rem;line-height: 1.3rem;">
+                                            {{ "简介：" + item.video_synopsis }}
+                                        </span>
+                                        <div class="play_btn" @click="downlaodApp">
+                                            App播放
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--影片详情-->
+                        <div class="Details_all_one mui-hidden">
+                            <div class="all_one_title">
+                                <p class="all_one_title_name">
+                                    {{ asyncVideoName }}
+                                </p>
+                                <p class="all_one_title_guanbi" @click="backFromDes">
+                                    <img src="../img/close.png" alt="">
+                                </p>
+                            </div>
+                            <div class="Details_all_content">
+                                <div class="Details_left">
+                                    <div class="all_content_one">
+                                        <div class="content_one">类型:</div>
+                                        <div class="content_two">
+                                            <span class="zone_name">
+                                                {{ asyncZoneName }}
+                                            </span>
+                                            <span class="type_name">
+                                                {{ asyncPlotTypeName }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="all_content_one">
+                                        <div class="content_one">导演:</div>
+                                        <div class="content_two">
+                                            <span class="director">
+                                                {{ asyncDirector + "Alex"}}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="all_content_one">
+                                        <div class="content_one">演员: </div>
+                                        <div class="content_two">
+                                            <span class="main_actor">
+                                                {{asyncMainActor}}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="all_content video_synopsis">
+                                    {{ asyncVideoSynopsis }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="output" style="display: none;"></div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script src="../js/zepto.min.js"></script>
+    <script src="../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../js/common.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../js/fastclick.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" src="../js/immersed.js"></script>
+    <script src="../js/vue.min.js" type="text/javascript"></script>
+    <script src="../js/mescroll.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        var app = new Vue({
+            el: '#app',
+            data: {
+                networkError: false,
+                hasNoData: false,
+                collect: 0,
+                visitorId: null, // 用户 id
+                videoId: null,
+                videoType: null,
+                likeList: [], // 循环渲染数据
+                inLoading: null,
+                asyncVideoName: '',
+                asyncDoubanScore: 0,
+                asyncZoneName: '',
+                asyncPlotTypeName: '',
+                asyncDirector: '',
+                asyncMainActor: '',
+                asyncPlayTotal: 0,
+                asyncVideoSynopsis: 0,
+                mescroll: "",
+                position: 0,
+                showPosition: true,
+            },
+            methods: {
+                getUser: function() {
+                    that = this;
+                    that.visitorId = 1
+                    that.videoId = localStorage.getItem('id');
+                    that.videoType = localStorage.getItem('videoType');
+                },
+                backView: function() { //返回上个页面
+                    if (mui.back && window.plus) {
+                        var list = plus.webview.currentWebview().opener();
+                        list && mui.fire(list, 'show');
+                        mui.back();
+                    } else {
+                        history.go(-1);
+                    }
+                },
+                getlike: function() {
+                    that = this;
+                    mui.ajax(qnapi + 'api/selectAllVideo', {
+                        data: {
+                            this_num: 1,
+                            visitor_id: that.visitorId,
+                            video_id: that.videoId
+                        },
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        type: 'post', //HTTP请求类型
+                        success: function(data) {
+                            var res = JSON.parse(data);
+                            res = JSON.stringify(res);
+                            that.likeList = JSON.parse(data).data.alike;
+                            that.mescroll.endBySize(that.likeList.length, that.likeList.length);
+                        },
+                        error: function(xhr, type, errorThrown) {
+                            mui.toast("服务器繁忙");
+                        }
+                    })
+                },
+                clickSave: function(index, item) {
+                    that = this;
+                    localStorage.setItem("id", "");
+                    localStorage.setItem("id", item.id);
+                    var visitorId = localStorage.getItem('visitorID')
+                    that.muiAjax(visitorId, item.id)
+                },
+                muiAjax: function(visitorId, videoId) {
+                    that = this
+                    mui.ajax({ // 影片详情
+                        url: qnapi + 'api/selectAllVideo',
+                        type: 'post',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        data: {
+                            this_num: 1,
+                            visitor_id: visitorId,
+                            video_id: videoId
+                        },
+                        success: function(res) {
+                            that.networkError = false;
+                            var data = JSON.parse(res)
+                            var details = data.data;
+                            if (details.allVideoArr.length > 0) {
+                                that.videoId = details.videoInfo.id;
+                                that.likeList = details.alike;
+                                localStorage.setItem("Movie_url", '')
+                                localStorage.setItem("Movie_url", details.allVideoArr[0].video_url)
+                                localStorage.setItem("Movie_name", '')
+                                localStorage.setItem("Movie_name", details.videoInfo.video_name)
+                                that.asyncVideoName = details.videoInfo.video_name
+                                that.asyncDoubanScore = details.videoInfo.douban_score
+                                that.asyncZoneName = details.videoInfo.zone_name
+                                that.asyncPlotTypeName = details.videoInfo.plot_type_name
+                                that.asyncDirector = details.videoInfo.director
+                                that.asyncMainActor = details.videoInfo.main_actor
+                                if (details.videoInfo.play_total >= 10000) {
+                                    var play_total = details.videoInfo.play_total / 10000
+                                    that.asyncPlayTotal = play_total + '万次播放' //播放量
+                                } else {
+                                    that.asyncPlayTotal = details.videoInfo.play_total + '次播放'
+                                }
+                                that.asyncVideoSynopsis = details.videoInfo.video_synopsis
+                                if (details.is_collect) {
+                                    that.collect = 1;
+                                } else {
+                                    that.collect = 0;
+                                }
+                            }
+                            that.mescroll.scrollTo(0, 0);
+                            that.hasNoData = that.asyncVideoName == null || that.asyncVideoName ==
+                                undefined
+                        },
+                        error: function(xhr, type, errorThrown) {
+                            that.networkError = true;
+                            mui.toast("服务器繁忙");
+                        },
+
+                    });
+                },
+                gotoDes: function() {
+                    var classElements = document.getElementsByClassName('Details_all')
+                    if (classElements && classElements.length == 1) {
+                        classElements[0] && classElements[0].classList.add('mui-hidden');
+                    }
+                    classElements = document.getElementsByClassName('Details_all_one')
+                    if (classElements && classElements.length == 1) {
+                        classElements[0] && classElements[0].classList.remove('mui-hidden');
+                    }
+                },
+                backFromDes: function() {
+                    var classElements = document.getElementsByClassName('Details_all_one')
+                    if (classElements && classElements.length == 1) {
+                        classElements[0] && classElements[0].classList.add('mui-hidden');
+                    }
+                    classElements = document.getElementsByClassName('Details_all')
+                    if (classElements && classElements.length == 1) {
+                        classElements[0] && classElements[0].classList.remove('mui-hidden');
+                    }
+                },
+                upCallback: function() {
+                    that = this;
+                    that.getlike();
+                },
+                refresh: function() {
+                    that = this;
+                    that.muiAjax(that.visitorId, that.videoId);
+                    that.getlike();
+                },
+                downlaodApp: function() {
+                    that = this;
+                    mui.openWindow({
+                        url: 'download.html',
+                        id: 'download.html'
+                    })
+                },
+                toSearch: function() {
+                    that = this;
+                    mui.openWindow({
+                        url: 'search.html',
+                        id: 'search.html'
+                    })
+                },
+            },
+            mounted: function() {
+                that = this;
+                FastClick.attach(document.body);
+                that.getUser();
+                    that.muiAjax(that.visitorId, that.videoId);
+                    that.mescroll = new MeScroll("mescroll", {
+                        down: {
+                            use: false,
+                            isLock: true,
+                            isBounce: false,
+                        },
+                        up: {
+                            callback: that.upCallback, //上拉加载的回调
+                            noMoreSize: 3, //如果列表已无数据,可设置列表的总数量要大于5才显示无更多数据;
+                            isBounce: false,
+                            htmlNodata: '<p class="upwarp-nodata"></p>',
+                            page: {
+                                num: 0, //当前页 默认0,回调之前会加1; 即callback(page)会从1开始
+                                size: 9 //每页数据条数,默认10
+                            },
+                            lazyLoad: {
+                                use: true, // 是否开启懒加载,默认false
+                                attr: 'imgurl' // 标签中网络图的属性名 : <img imgurl='网络图  src='占位图''/>
+                            }
+                        }
+                    });
+            },
+            beforeDestroy: function() {
+                that = this;
+            }
+        })
+    </script>
+</html>

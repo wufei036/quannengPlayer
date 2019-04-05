@@ -1,0 +1,24 @@
+html, body {
+    background-color: #FFFFFF;
+}
+.mui-bar {
+    box-shadow: none;
+    border-top: 1px solid #fff;
+}
+.mui-bar .mui-tab-item img {
+    width: 1.5rem;
+    display: block;
+    margin: 0 auto;
+}
+.mui-bar .mui-tab-item img.spread {
+    width: 4rem;
+    display: block;
+    margin: 0 auto;
+    margin-bottom: .1rem;
+}
+.mui-bar .mui-tab-item .mui-tab-label {
+    font-size: 12px;
+}
+.mui-bar .mui-tab-item.mui-active {
+    color: #3a8bd6 !important;
+}

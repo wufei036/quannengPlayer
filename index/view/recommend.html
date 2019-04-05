@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+        <meta name="viewport" content="width=  device-width, height=device-height,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui" />
+        <meta http-equiv="Cache-Control" content="no-cache">
+        <title>全能影视</title>
+        <link rel="stylesheet" href="../css/mui.min.css" type="text/css" charset="utf-8" />
+        <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
+        <link href="../css/swiper.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="../css/movie.css" type="text/css" charset="utf-8" />
+        <link rel="stylesheet" href="../css/dropload.css" type="text/css">
+        <link rel="stylesheet" href="../css/mescroll.min.css" type="text/css">
+    </head>
+    <body>
+        <div id="app" v-cloak>
+            <div class="not_want_page" v-show="(!networkError && hasNoData) || (networkError && !hasNoData)">
+                <div v-show="!networkError && hasNoData" class="network_error">
+                    <img class="not_want_img" src="../img/error_tip_img.png">
+                    <span class="tip">
+                        暂时没有数据
+                    </span>
+                </div>
+                <div v-show="networkError && !hasNoData" class="network_error">
+                    <img class="not_want_img" src="../img/error_tip_img.png">
+                    <span class="network tip">
+                        当前网络好像有问题，请检查网络后刷新
+                    </span>
+                    <span class="refresh_btn" @tap="refresh">
+                        刷新
+                    </span>
+                </div>
+            </div>
+            <header class="header">
+                <div class="header_top">
+                    <img src="../img/logo.png" / class="logo">
+                    <img src="../img/search.png" class="search" @click="toSearch"/>
+                    <button type="button" class="mui-btn mui-btn-warning download" @click="downlaodApp">下载APP</button>
+                </div>
+            </header>
+            <div v-show="!networkError && !hasNoData" id="mescrollRecommend" class="mescroll" style="margin-top: 3.4rem;">
+                <!-- //这个div不能删,否则上拉加载的布局会错位.(可以改成ul或者其他容器标签)内容... -->
+                <div>
+                    <!-- 轮播 -->
+                    <div class="img_content">
+                        <div class="swiper-container">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide" v-for="(item,index) in slideshow" :key="index">
+                                    <img src='../img/hmr.png' :imgurl=qnapi+item.picture_url @click="clickSwiper(index,item)">
+                                    <div class="swiper_img_text">
+                                        <p class="img_text_title">{{item.video_name}}</p>
+                                        <p class="img_text_intro">{{item.summary.length != 0 ? item.summary : item.video_synopsis}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 如果需要分页器 -->
+                            <div class="swiper-pagination"></div>
+                        </div>
+                    </div>
+                    <!-- 数据循环 -->
+                    <div class="module_div" v-for="(item_one,index) in homeList" :key="index">
+                        <!-- 模块一 -->
+                        <!-- 判断数据是否存在,否则数据为空时会报错 -->
+                        <div class="module_one" v-if="item_one[0] && item_one[0].video && item_one[0].video.length && item_one[0].video.length > 0 ">
+                            <div class="module_title">
+                                <div class="origin"></div>
+                                <div class="module_text"> {{ item_one[0] && item_one[0].label_name}} </div>
+                                <span @click="click_more(item_one[0].id,item_one[0].label_name)"><span class="more_text">
+                                        更多
+                                    </span>
+                                    <img src="../img/icon_go.png" />
+                                </span>
+                            </div>
+
+                            <div class="details" v-for="(item,index) in item_one[0].video.slice(0, 6)" @click="clickSave(index,item)">
+                                <!-- 正式版 -->
+                                <img src='../img/background.png' :imgurl=qnapi+item.picture_url>
+                                <div class="details_content">
+                                    <div class="title">{{item && item.video_name}}</div>
+                                    <div class="describe"> {{item.summary.length != 0 ? item.summary : item.video_synopsis}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 模块二 -->
+                        <div class="module_two" v-if="item_one[1] && item_one[1].video && item_one[1].video.length && item_one[1].video.length > 0">
+                            <div class="module_title">
+                                <div class="origin origin_two"></div>
+                                <div class="module_text"> {{item_one[1] && item_one[1].label_name}} </div>
+                                <span @click="click_more(item_one[1].id,item_one[1].label_name)"><span class="more_text">
+                                        更多
+                                    </span>
+                                    <img src="../img/icon_go.png" />
+                                </span>
+                            </div>
+                            <div class="details" v-for="(item,index) in item_one[1].video.slice(0, 7)" @click="clickSave(index,item)"
+                                :class="index == 0 ? 'details_two' : 'meiyou' ">
+                                <img src='../img/background.png' :imgurl=qnapi+item.picture_url>
+                                <div class="details_content">
+                                    <div class="title">{{item && item.video_name}}</div>
+                                    <div class="describe"> {{item.summary.length != 0 ? item.summary : item.video_synopsis}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 模块三 -->
+                        <div class="module_three" v-if="item_one[2] && item_one[2].video && item_one[2].video.length && item_one[2].video.length > 0">
+                            <div class="module_title">
+                                <div class="origin origin_two"></div>
+                                <div class="module_text"> {{item_one[2] && item_one[2].label_name}} </div>
+                                <span @click="click_more(item_one[2].id,item_one[2].label_name)"><span class="more_text">
+                                        更多
+                                    </span>
+                                    <img src="../img/icon_go.png" />
+                                </span>
+                            </div>
+                            <div class="details" v-for="(item,index) in item_one[2].video.slice(0, 7)" @click="clickSave(index,item)"
+                                :class="index == 0 ? 'details_two' : 'meiyou' ">
+                                <img src='../img/background.png' :imgurl=qnapi+item.picture_url>
+                                <div class="details_content">
+                                    <div class="title">{{item && item.video_name}}</div>
+                                    <div class="describe"> {{item.summary.length != 0 ? item.summary : item.video_synopsis}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="../js/zepto.min.js"></script>
+        <script src="../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../js/vue.min.js" type="text/javascript"></script>
+        <script src="../js/dropload.min.js" type="text/javascript"></script>
+        <script src="../js/common.js" type="text/javascript"></script>
+        <script src="../js/mescroll.min.js" type="text/javascript"></script>
+        <script src="../js/swiper.min.js"></script>
+        <script type="text/javascript">
+            var app = new Vue({
+                el: '#app',
+                data: {
+                    networkError: false,
+                    hasNoData: false,
+                    visitor_id: null, // 用户 id
+                    slideshow: [], // 轮播图
+                    mySwiper: "",
+                    homeList: null, // 首页列表 
+                    pageNum: null,
+                    resData: [], //每次数据请求获取到的数据 
+                    mescrollRecommend: "",
+                    choiceness: ["精选", "电影", "电视剧", "动漫", "综艺"], //精选数据
+                    selectedTabIndex: 0, // 0精选 1电影 2电视剧 3动漫 4综艺
+                    version: '', //应用版本号
+                },
+                methods: {
+                    getUser: function() {
+                        that = this;
+                        that.visitor_id = 1;
+                    },
+                    getSlideshow: function() {
+                        that = this;
+                        mui.getJSON(qnapi + 'api/lunbo', {
+                            type: '4'
+                        }, function(res) {
+                            if (res.lunBoArr.data.length > 0) {
+                                that.slideshow = res.lunBoArr.data;
+                                that.$nextTick(function() {
+                                    that.mySwiper = new Swiper('.swiper-container', {
+                                        // direction: 'vertical', // 垂直切换选项
+                                        loop: true, // 循环模式选项
+                                        autoplayDisableOnInteraction: false,
+                                        autoplay: {
+                                            delay: 2000
+                                        }, //设置自动循环播放
+                                        // speed: 800, //切换速度
+                                        // 如果需要分页器
+                                        pagination: {
+                                            el: '.swiper-pagination',
+                                        },
+                                    })
+                                    var elements = document.getElementsByClassName(
+                                        "swiper-slide")
+                                    for (var eleItem of elements) {
+                                        eleItem.addEventListener('click', function(event) {
+                                            var index = event.currentTarget.getAttribute(
+                                                "data-swiper-slide-index")
+                                            that.clickSwiper(index, that.slideshow[
+                                                index]);
+                                        })
+                                    }
+                                })
+                            } else {}
+                        })
+                    },
+                    clickSwiper: function(index, item) {
+                        localStorage.setItem("id", item.id);
+                        mui.openWindow({
+                            url: 'details.html',
+                            id: 'details.html'
+                        });
+                    },
+                    clickSave: function(index, item) {
+                        localStorage.setItem("id", item.id);
+                        mui.openWindow({
+                            url: 'details.html',
+                            id: 'details.html'
+                        });
+                    },
+                    click_more: function(id, name) {
+                        localStorage.setItem("labelId", id);
+                        localStorage.setItem("labelName", name);
+                        mui.openWindow({
+                            url: 'filmDetails.html',
+                            id: 'filmDetails.html',
+                        });
+                    },
+                    upCallback: function(page) {
+                        var that = this;
+                        that.pageNum = page.num
+                        that.acquire(that.pageNum);
+                    },
+                    acquire: function(page) {
+                        var that = this;
+                        mui.ajax(qnapi + 'api/showAllRecommend?page=' + page, {
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded'
+                            },
+                            type: 'get', //HTTP请求类型
+                            success: function(data) {
+                                that.networkError = false;
+                                var res = JSON.parse(data)
+                                if (res.dataAllRecommend.data != 0) {
+                                    that.resData = res.dataAllRecommend.data;
+                                    if (that.pageNum == 1) {
+                                        that.homeList = [];
+                                    }
+                                    that.homeList.push(that.resData);
+                                    var totalPage = res.dataAllRecommend.last_page;
+                                    that.mescrollRecommend.endByPage(that.resData.length,
+                                        totalPage);
+                                } else {
+                                    that.mescrollRecommend.endSuccess(false);
+                                }
+                                that.hasNoData = that.homeList && that.homeList.length === 0
+                            },
+                            error: function(xhr, type, errorThrown) {
+                                mui.toast("服务器繁忙");
+                                that.networkError = true;
+                                that.mescrollRecommend.endErr();
+                            }
+                        })
+                    },
+                    toSearch: function() {
+                        that = this;
+                        mui.openWindow({
+                            url: 'search.html',
+                            id: 'search.html'
+                        })
+                    },
+                    refresh: function() {
+                        that = this;
+                        that.getUser();
+                        that.getSlideshow();
+                        that.acquire(that.pageNum);
+                    },
+                    downlaodApp: function() {
+                        that = this;
+                        mui.openWindow({
+                            url: 'download.html',
+                            id: 'download.html'
+                        })
+                    }
+                },
+                mounted: function() {
+                    that = this;
+                    that.getUser();
+                    that.getSlideshow();
+                    that.mescrollRecommend = new MeScroll("mescrollRecommend", {
+                        up: {
+                            callback: that.upCallback, //上拉加载的回调
+                            noMoreSize: 3, //如果列表已无数据,可设置列表的总数量要大于5才显示无更多数据;
+                            isBounce: false,
+                            htmlNodata: '<p class="upwarp-nodata">-- 我是有底线的 --</p>',
+                            page: {
+                                num: 0, //当前页 默认0,回调之前会加1; 即callback(page)会从1开始
+                                size: 3 //每页数据条数,默认10
+                            },
+                            lazyLoad: {
+                                use: true, // 是否开启懒加载,默认false
+                                attr: 'imgurl' // 标签中网络图的属性名 : <img imgurl='网络图  src='占位图''/>
+                            }
+                        }
+                    });
+
+                },
+                beforeDestroy: function() {
+                    that = this;
+                }
+            })
+        </script>
+    </body>
+</html>

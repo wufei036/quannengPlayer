@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>搜索</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <link rel="stylesheet" href="../css/mui.min.css" type="text/css" charset="utf-8" />
+        <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
+        <link rel="stylesheet" href="../css/search.css" type="text/css" charset="utf-8" />
+        <script src="../js/Vue-Lazyload.js" type="text/javascript"></script>
+    </head>
+    <body>
+        <div id="app" v-cloak>
+            <div class="Search">
+                <header class="mui-bar mui-bar-nav header_title">
+                    <div class="mui-action-back mui-pull-right Search_back">取消</div>
+                    <div class="Search_input">
+                        <!-- <img id="result" src="../img/home_search_img.png" alt="" @click="searchClick"> -->
+                        <span class="mui-icon mui-icon-search result" @click="searchClick"></span>
+                            <form action="">
+                                <div class="mui-input-row">
+                                    <input type="text" id="input" class="mui-input-clear" 
+                                        :placeholder="getPlaceHolderString()"
+                                        @keyup.enter="searchClick" onkeypress="if(event.keyCode == 13) return false;" v-model="inputValue">
+                                </div>
+                            </form> 
+                    </div>
+                </header>
+                <div class="not_want_page" v-show="(!networkError && hasNoData) || (networkError && !hasNoData)">
+                    <div v-show="!networkError && hasNoData" class="network_error">
+                        <img class="not_want_img" src="../img/error_tip_img.png">
+                        <span class="tip">
+                            暂时没有数据
+                        </span>
+                    </div>
+                    <div v-show="networkError && !hasNoData" class="network_error">
+                        <img class="not_want_img" src="../img/error_tip_img.png">
+                        <span class="network tip">
+                            当前网络好像有问题，请检查网络后刷新
+                        </span>
+                        <span class="refresh_btn" @tap="refresh">
+                            刷新
+                        </span>
+                    </div>
+                </div>
+                <div v-show="!networkError && !hasNoData" class="mui-scroll-wrapper">
+                    <div class="mui-scroll">
+                        <!--  -->
+                        <div style="margin-top:3.93rem;"></div>
+                        <div class="Search_sousuo">
+                            <div class="Search_history Search_history1">
+                                <div class="Search_history_title">
+                                    <p>历史搜索</p>
+                                    <div class="delHis"  @click="delAll">
+                                        <span>清空</span>
+                                        <img  src="../img/delete.png" alt="" >
+                                    </div>
+                                    
+                                </div>
+                                <div class="Search_Keyword">
+                                    <span v-for="(item,index) in historys " :key="index" @click="historyClick">{{item}}</span>
+                                </div>
+                            </div>
+
+                            <div class="Search_history">
+                                <div class="Search_history_title Search_history_title1">
+                                    <p>热门搜索</p>
+                                </div>
+                                <div class="Search_Keyword_hot">
+                                    <span class="span" v-for="(item,index) in hotSearchList.slice(0,10)" :key="index">
+                                        <span class="hot" :class="{hotOne:index==1 || index == 2 ,hotTwo:index > 2}">{{index+1}}.</span>
+                                        <span class="span1" @click="historyClick">{{item.video_name}}</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 搜索内容 -->
+                        <div class="content mui-hidden">
+                            <div class="details" v-for="(item,index) in searchResult" :key="index" @click="clickSave(index, item)">
+                                <!-- <img :src=qnapi+item.picture_url> -->
+                                <img name="list_item_img" src="../img/hmr.png" :lazy="qnapi + item.picture_url" >
+                                <div class="details_content">
+                                    <div class="title">{{item.video_name}}</div>
+                                    <div class="describe"> {{item.summary.length != 0 ? item.summary : item.video_synopsis}} </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script src="../js/zepto.min.js"></script>
+    <script src="../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../js/vue.min.js" type="text/javascript"></script>
+    <script src="../js/common.js" type="text/javascript" ></script>
+    <script type="text/javascript">
+        Vue.use(VueLazyload, {
+            error: '../img/hmr.png',
+            loading: '../img/hmr.png'
+        });
+        var app
+        app = new Vue({
+            el: '#app',
+            data: {
+                networkError: false,
+                hasNoData: false,
+                hasNoSearchResult: false,
+                hasNoHotSearch: false,
+                placeHolderString: null,
+                historys: [], //搜索的历史列表
+                hotSearchList: [], //热搜数据列表
+                searchResult: [], //搜索结果列表
+                inputValue: null,
+            },
+            methods: {
+                getPlaceHolderString: function() {
+                    that = this;
+                    return that.placeHolderString ? that.placeHolderString : "请输入搜索内容"
+                },
+                getHistorys: function() {
+                    that = this;
+                    var hots = JSON.parse(localStorage.getItem('arr'));
+                    console.log("hots.length ",hots.length );
+                    if (hots.length > 0) {
+                        that.historys = hots;
+                        that.historys = that.historys.filter(function(element, index, self) {
+                            return self.indexOf(element) === index;
+                        });
+                    } else {
+                        $('.Search_history1').toggleClass('mui-hidden');
+                    }
+                },
+                getHotSearch: function() {
+                    that = this;
+                    mui.ajax(qnapi + 'api/searchOrder', {
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        type: 'get', //HTTP请求类型
+                        success: function(res) {
+                            that.networkError = false;
+                            res = JSON.parse(res)
+                            var length = res.searchArr && res.searchArr.length
+                            if (length > 0) {
+                                that.hotSearchList = res.searchArr;
+                            }
+                            that.hasNoHotSearch = that.hotSearchList && that.hotSearchList.length === 0
+                            that.hasNoData = that.hasNoSearchResult && that.hasNoHotSearch
+                        },
+                        error: function(xhr, type, errorThrown) {
+                            mui.toast("服务器繁忙");
+                            that.networkError = true;
+                        }
+                    })
+                },
+                historyClick: function(e) {
+                    that = this;
+                    var videoName = e.target.innerText;
+                    that.inputValue = videoName;
+                    mui.ajax(qnapi + 'api/search/' + videoName, {
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        type: 'get', //HTTP请求类型
+                        success: function(res) {
+                            that.networkError = false;
+                            res = JSON.parse(res);
+                            var length = res.length
+                            if (length) {
+                                $('.Search_sousuo').addClass('mui-hidden');
+                                $('.content').removeClass('mui-hidden');
+                                that.searchResult = res;
+                            } else {
+                                mui.toast('没有相关内容!')
+                            }
+                            that.hasNoSearchResult = length <= 0
+                            that.hasNoData = that.hasNoSearchResult && that.hasNoHotSearch
+                            that.lazyLoad();
+                        },
+                        error: function(xhr, type, errorThrown) {
+                            mui.toast("服务器繁忙");
+                            that.networkError = true;
+                        }
+                    })
+                },
+                searchClick: function() {
+                    that = this;
+                    if (that.inputValue || that.placeHolderString) {
+                        if (!that.inputValue) {
+                            that.inputValue = that.placeHolderString
+                        }
+                        mui.ajax(qnapi + 'api/search/' + that.inputValue, {
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded'
+                            },
+                            type: 'get', //HTTP请求类型
+                            success: function(res) {
+                                that.networkError = false;
+                                res = JSON.parse(res);
+                                var length = res.length
+                                if (length) {
+                                    var historys = JSON.parse(localStorage.getItem('arr'))
+                                    historys.push(that.inputValue);
+                                    localStorage.setItem('arr', JSON.stringify(historys))
+                                    $('.Search_sousuo').addClass('mui-hidden');
+                                    $('.content').removeClass('mui-hidden');
+                                    that.searchResult = res;
+                                } else {
+                                    that.searchResult = [];
+                                    mui.toast('没有相关内容!')
+                                }
+                                that.hasNoSearchResult = length <= 0
+                                that.hasNoData = that.hasNoSearchResult && that.hasNoHotSearch
+                                that.lazyLoad();
+                            },
+                            error: function(xhr, type, errorThrown) {
+                                mui.toast("服务器繁忙");
+                                that.networkError = true;
+                            }
+                        })
+                    } else {
+                        mui.toast('请输入搜索内容!')
+                    }
+                },
+                delAll: function() {
+                    var btnArray = ['否', '是'];
+                    mui.confirm('确认删除历史记录？', '提示', btnArray, function(e) {
+                        if (e.index == 1) {
+                            var arr = []
+                            localStorage.setItem('arr', JSON.stringify(arr))
+                            $('.Search_history1').toggleClass('mui-hidden');
+                            mui.toast('删除成功')
+                        }
+                    })
+                },
+                clickSave: function(index, item) {
+                     localStorage.setItem("id", item.id);
+                    mui.openWindow({
+                        url: 'details.html',
+                        id: 'details.html'
+                    });
+                },
+                refresh: function() {
+                    that = this;
+                    that.getHistorys();
+                    that.getHotSearch();
+                },
+                lazyLoad: function() {
+                    setTimeout(function() {
+                        var imgs = document.getElementsByName("list_item_img")
+                        for (var index = 0; index < imgs.length; index++) {
+                            var dom = imgs[index]
+                            var imgurl = dom.getAttribute("lazy");
+                            var temp = new Image();
+                            temp.onload = function() {
+                                var dom = this.dom;
+                                var imgurl = dom.getAttribute("lazy");
+                                dom.classList.add("mescroll-fade-in");
+                                dom.src = imgurl;
+                                dom.removeAttribute('lazy');
+                            }
+                            temp.src = imgurl;
+                            temp.dom = dom;
+                        }
+                    }, 0);
+                }
+            },
+            mounted: function() {
+                that = this;
+                // that.getHistorys(); //获取搜索历史记录
+                that.getHotSearch(); //获取热搜数据
+                var options = {
+                    scrollY: true, //是否竖向滚动
+                    scrollX: false, //是否横向滚动
+                    startX: 0, //初始化时滚动至x
+                    startY: 0, //初始化时滚动至y
+                    indicators: true, //是否显示滚动条
+                    deceleration: 0.0006, //阻尼系数,系数越小滑动越灵敏
+                    bounce: true //是否启用回弹
+                }
+                mui('.mui-scroll-wrapper').scroll({
+                    deceleration: 0.0005 //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+                });
+            }
+        })
+    </script>
+</html>

@@ -1,0 +1,306 @@
+* {
+    -webkit-user-select: none;
+    -ms-touch-select: none;
+/*
+    -ms-touch-action: none;
+*/
+}
+html {
+    width: 100%;
+    height: 100%;
+    background:#fff;
+}
+body {
+    background:#fff;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    font-family: Arial;
+    color: #6c6c6c;
+    -webkit-touch-callout:none;
+    -webkit-tap-highlight-color:rgba(0,0,0,0);
+    -webkit-text-size-adjust:none;
+}
+@media only screen and (min-width: 320px) {
+    html {
+        font-size: 16px;
+    }
+}
+@media only screen and (min-width: 360px) {
+    html {
+        font-size: 18px;
+    }
+}
+@media only screen and (min-width: 365px) {
+    html {
+        font-size: 18.25px;
+    }
+}
+@media only screen and (min-width: 370px) {
+    html {
+        font-size: 18.5px;
+    }
+}
+@media only screen and (min-width: 375px) {
+    html {
+        font-size: 18.75px;
+    }
+}
+@media only screen and (min-width: 380px) {
+    html {
+        font-size: 19px;
+    }
+}
+/*新增*/
+@media only screen and (min-width: 385px) {
+    html {
+        font-size: 19.25px;
+    }
+}
+@media only screen and (min-width: 390px) {
+    html {
+        font-size: 19.5px;
+    }
+}
+@media only screen and (min-width: 395px) {
+    html {
+        font-size: 19.75px;
+    }
+}
+/*新增*/
+@media only screen and (min-width: 400px) {
+    html {
+        font-size: 20px;
+    }
+}
+@media only screen and (min-width: 405px) {
+    html {
+        font-size: 20.25px;
+    }
+}
+@media only screen and (min-width: 410px) {
+    html {
+        font-size: 20.5px;
+    }
+}
+@media only screen and (min-width: 414px) {
+    html {
+        font-size: 20.7px;
+    }
+}
+/*两个*/
+/*两个*/
+@media only screen and (min-width: 424px) {
+    html {
+        font-size: 21.2px;
+    }
+}
+@media only screen and (min-width: 434px) {
+    html {
+        font-size: 21.7px;
+    }
+}
+@media only screen and (min-width: 444px) {
+    html {
+        font-size: 21.7px;
+    }
+}
+@media only screen and (min-width: 454px) {
+    html {
+        font-size: 22.7px;
+    }
+}
+@media only screen and (min-width: 464px) {
+    html {
+        font-size: 23.2px;
+    }
+}
+@media only screen and (min-width: 474px) {
+    html {
+        font-size: 23.7px;
+    }
+}
+@media only screen and (min-width: 484px) {
+    html {
+        font-size: 24.2px;
+    }
+}
+@media only screen and (min-width: 494px) {
+    html {
+        font-size: 24.7px;
+    }
+}
+@media only screen and (min-width: 504px) {
+    html {
+        font-size: 25.2px;
+    }
+}
+@media only screen and (min-width: 640px) {
+    html {
+        font-size: 32px;
+    }
+}
+@media only screen and (min-width: 750px) {
+    html {
+        font-size: 37.5px;
+    }
+}
+@media only screen and (min-width: 768px) {
+    html {
+        font-size: 38.4px
+    }
+}
+body , html {
+    margin: 0;
+    padding: 0;
+    background:#fff; 
+}
+input {
+    outline: none;
+    border: none;
+}
+a, a:hover {
+    text-decoration:none;
+    color:#fff;
+}
+p {
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+a, button {
+    cursor: pointer;
+    outline: 0;
+}
+a, img {
+    border: none 0 transparent;
+}
+img { 
+    object-fit: cover;
+    object-position: top;
+}
+li { list-style: inherit;}
+/* 轮播图 */
+/* 顶部导航 */
+.mui-bar{
+    padding-top:1.06rem;
+    background:#303032;
+    box-shadow:none;
+    border:none;
+    height: 3.4rem; 
+    box-sizing: border-box;
+}
+.mui-bar .mui-title{
+    color:#fff;
+    font-size:.96rem;
+    text-align:center;
+}
+.mui-bar .header-right{
+    margin-top:.74rem;
+    float:right;
+}
+/*.mui-bar .mui-action-back{
+        float:left;
+        color:#fff;
+        
+}*/
+.header_title {
+    padding-top:1.06rem;
+    width: 100%;
+    position: fixed;
+    text-align: center;
+    top: 0;
+    left: 0;
+    background: #303032;
+    height: 3.4rem;
+    line-height: 2.34rem;
+    margin-bottom: .53rem;
+    font-size:15px;
+    z-index: 2;
+    color:#fff;
+}
+.header_title .header_title_back,
+.header_title .header_title_content,
+.header_title .header_title_seek {
+    display: inline-block;
+    vertical-align: top;
+}
+.header_title .header_title_content {
+    width: 85%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
+    font-size: .96rem;
+    padding: 0 2.5%;
+    box-sizing: border-box;
+}
+.header_title .header_title_back img {
+    height: .85rem;
+    margin-top: .69rem;
+}
+.header_title .header_title_seek img {
+    height: 1.06rem;
+    margin-top: .64rem;
+}
+/* 滑动选集 */
+.TelePlayDetails .list-wrapper {
+    padding: 0 10px;
+    line-height: 60px;
+    white-space: nowrap;
+}
+.TelePlayDetails .list-item {
+    display: inline-block;
+    width: 2.93rem;
+    height: 2.93rem;
+    border-radius: 8px;
+    background:#f8f8f8;
+    margin-left:.53rem;
+}
+
+/* 电视剧播放页面样式结束 */
+/*网络异常或者数据为零的情况*/
+.not_want_page {
+    display: flex;
+    justify-content: center;
+    -webkit-justify-content: center;
+    align-items: center;
+    -webkit-align-items: center;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(240, 241, 242, 1);
+}
+.not_want_page span.tip {
+    margin-top: 10%;
+    width: 90%;
+    font-size: 14px;
+    color: rgba(154, 154, 154, 1);
+    text-align: center;
+    line-height: 1rem;
+}
+.not_want_page .network_error {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    -webkit-justify-content: center;
+    align-items: center;
+    -webkit-align-items: center;
+}
+.not_want_page .network_error .refresh_btn {
+    margin-top: 10%;
+    width: 90%;
+    height: 2.5rem;
+    line-height: 2.5rem;
+    background-color: #3a8bd6;
+    border-radius: 30px;
+    text-align: center;
+    color: white;
+}
+.not_want_img {
+    width: 50%;
+}
+
