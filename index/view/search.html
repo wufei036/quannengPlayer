@@ -17,7 +17,6 @@
                 <header class="mui-bar mui-bar-nav header_title">
                     <div class="mui-action-back mui-pull-right Search_back">取消</div>
                     <div class="Search_input">
-                        <!-- <img id="result" src="../img/home_search_img.png" alt="" @click="searchClick"> -->
                         <span class="mui-icon mui-icon-search result" @click="searchClick"></span>
                             <form action="">
                                 <div class="mui-input-row">
@@ -79,7 +78,6 @@
                         <!-- 搜索内容 -->
                         <div class="content mui-hidden">
                             <div class="details" v-for="(item,index) in searchResult" :key="index" @click="clickSave(index, item)">
-                                <!-- <img :src=qnapi+item.picture_url> -->
                                 <img name="list_item_img" src="../img/hmr.png" :lazy="qnapi + item.picture_url" >
                                 <div class="details_content">
                                     <div class="title">{{item.video_name}}</div>
@@ -270,7 +268,7 @@
             },
             mounted: function() {
                 that = this;
-                // that.getHistorys(); //获取搜索历史记录
+                that.getHistorys(); //获取搜索历史记录
                 that.getHotSearch(); //获取热搜数据
                 var options = {
                     scrollY: true, //是否竖向滚动
