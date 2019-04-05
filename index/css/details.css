@@ -40,7 +40,7 @@ header .header_top button {
     height: 1.4rem;
     width: 4.3rem;
     border-radius: 42px;
-    font-size: 0.4rem;
+    font-size: 0.7rem;
     background-color: #fec92c;
     border: 1px solid #fec92c;
     font-weight: normal;
@@ -142,7 +142,7 @@ header .header_top button {
     height: 2rem;
 }
 .Details .Details_all .video_intro p {
-    font-size: 8px;
+    font-size: 0.7rem;
     margin-left: 10px;
 }
 .Details .Details_all .Details_box .Details_box_title {
@@ -617,7 +617,7 @@ header .header_top button {
     color: rgba(255, 255, 255, 0.8);
     background: rgba(244, 206, 92, 1);
     font-size: 0.7rem;
-    font-family: "PingFangSC-Thin";
+    /* font-family: "PingFangSC-Thin"; */
     border: 1px solid rgba(232, 199, 100, 0.5);
 }
 
