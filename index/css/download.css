@@ -5,20 +5,17 @@ body {
     padding: 0;
     border: 0;
 }
-
 #content {
     width: 100%;
     height: 100%;
 }
-
 #content img {
     width: 100%;
     height: 100%;
 }
-
 #content .downBtn {
     position: absolute;
-    top: 38%;
+    top: 35%;
     width: 100%;
     height: 3%;
     display: flex;
@@ -34,7 +31,7 @@ body {
 }
 #content .Official {
     position: absolute;
-    top: 44%;
+    top: 41%;
     width: 100%;
     text-align: center;
 }
@@ -44,10 +41,26 @@ body {
     width: 100%;
     text-decoration:none
 }
-
+#content .savePath{
+    position: absolute;
+    top: 44%;
+    width: 100%;
+    height: 3%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    display: -webkit-flex;
+    -webkit-align-items: center;
+    -webkit-justify-content: center;
+}
+#content .savePath button{
+    height: 100%;
+    width: 60%;
+    border-radius: 45px;
+}
 #content .chatBtn {
     position: absolute;
-    top: 82.5%;
+    top: 83%;
     width: 100%;
     height: 3%;
     display: flex;
@@ -70,7 +83,7 @@ body {
 }
 #content .iosDownBtn {
     position: absolute;
-    top: 85%;
+    top: 6%;
     width: 100%;
     height: 3%;
     display: flex;
@@ -80,7 +93,17 @@ body {
     -webkit-align-items: center;
     -webkit-justify-content: center;
 }
-#content .iosDownBtn img{
+#content .iosDownBtn button{
     height: 100%;
-    width: 40%;
+    width: 35%;
+    border-radius: 45px;
+}
+#content .iosDownBtn .mui-btn-warning{
+    background: #ffba00;
+    border:1px solid #ffba00;
+}
+#content .iosDownBtn .mui-btn-primary{
+    border:1px solid #1090fc;
+    background: #1090fc;
+    margin-left: 1rem;
 }

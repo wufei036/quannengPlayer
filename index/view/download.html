@@ -25,6 +25,9 @@
                 <a v-if="windowWidth < 450" href="http://www.ijuzi.net">{{OfficialUrl}}</a>
                 <a v-if="windowWidth > 450" href="http://www.ijuzi.net" style="font-size: 2rem;">{{OfficialUrl}}</a>
             </div>
+            <div class="savePath">
+                <button type="button" class="mui-btn mui-btn-primary " @click="savePath">保存地址到桌面，随时找到</button>
+            </div>
             <div class="chatBtn">
                 <img src="../img/chat_btn.png" @click="chatClick" />
             </div>
@@ -36,6 +39,7 @@
                 data: {
                     OfficialUrl: "http://www.ijuzi.net",
                     windowWidth: 0,
+                    timeHandler: null,
                 },
                 methods: {
                     iosClick: function() {
@@ -48,15 +52,26 @@
                         javascrtpt: window.location.href =
                             'https://github.com/wufei036/quannengPlayer/raw/master/index/player.apk'
                     },
+                    savePath: function() {
+                        that = this;
+                        javascrtpt: window.location.href = "https://github.com/wufei036/quannengPlayer/raw/master/index/prevision.mobileconfig";
+                    },
+                    clearTimer: function() {
+                        that = this;
+                        if (that.timeHandler) {
+                            window.clearInterval(that.timeHandler);
+                        }
+                    },
                     chatClick: function() {
-                         window.location.href = "pt://resolve?domain=ijuzi"; /*打开app的协议*/
+                        that = this;
+                        window.location.href = "pt://resolve?domain=ijuzi" /*打开app的协议*/
                         var iosDownload = "https://itunes.apple.com/us/app/potato-chat/id1204726898";
                         var androidDownload  = "https://download.ptcloud.info/android/potato.apk";
                         that.clearTimer();
                         if (mui.os.ios) {
-                            that.timeHandler = window.setTimeout(function() {plus.runtime.openURL(iosDownload);}, 1000);
-                        } else {
-                            that.timeHandler = window.setTimeout(function() {plus.runtime.openURL(androidDownload);}, 2200);
+                            that.timeHandler = window.setTimeout(function() {javascrtpt: window.location.href = iosDownload;}, 1000);
+                        } else if(mui.os.android){
+                             that.timeHandler = window.setTimeout(function() {javascrtpt: window.location.href =androidDownload;}, 2200);
                         }
                     },
                     makeCode: function() {
@@ -79,7 +94,9 @@
                             that.windowWidth = window.innerWidth
                         })
                     })
+                    
                 }
+                
             })
         </script>
     </body>
