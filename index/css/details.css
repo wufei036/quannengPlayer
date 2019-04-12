@@ -138,13 +138,16 @@ header .header_top button {
     border: 1px solid rgba(232, 199, 100, 0.5);
     margin-top: 1.2rem;
 }
+
 .Details .Details_all .video_intro {
     height: 2rem;
 }
+
 .Details .Details_all .video_intro p {
     font-size: 0.7rem;
     margin-left: 10px;
 }
+
 .Details .Details_all .Details_box .Details_box_title {
     width: 100%;
     height: 1.06rem;
@@ -153,6 +156,7 @@ header .header_top button {
     padding: 0 0.53rem;
     box-sizing: border-box;
 }
+
 .Details .Details_all .Details_box .Details_box_title .box_title_grade {
     text-align: center;
     vertical-align: middle;
@@ -166,6 +170,7 @@ header .header_top button {
     color: #0be24a;
     font-size: 0.53rem;
 }
+
 .Details .Details_all .Details_box .Details_box_title .box_title_name {
     vertical-align: middle;
     display: inline-block;
@@ -707,5 +712,16 @@ header .header_top button {
     bottom: 0;
     height: auto;
     /*如设置bottom:50px,则需height:auto才能生效*/
-    padding-bottom: 0;
+    padding-bottom: 4rem;
+}
+
+.bottomText {
+    background: rgb(249, 249, 249);
+    height: 1.5rem;
+    display: flex;
+    align-items: center;
+    display: -webkit-flex;
+    -webkit-align-items: center;
+    justify-content: center;
+    -webkit-justify-content: center;
 }

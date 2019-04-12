@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head id="head">
+        <meta charset=UTF-8"UTF-8">
+        <title>桔子影音</title>
+        <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
+        <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <link rel="stylesheet" href="../css/ios/app.min.css" media="all">
+        <link rel="stylesheet" href="../css/download.css" media="all">
+        <script src="../js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../js/qrcode.js" type="text/javascript"></script>
+    </head>
+    <body>
+        <div id="content" style="position:relative;">
+            <img src="../img/iosDownload_bg.jpg" />
+            <div class="iosDownBtn">
+                <img src="../img/IOS_btn.png" @click="iosClick" />
+                <img src="../img/IOS_btn.png" style="margin-left: 1rem;" @click="iosTrust" />
+            </div>
+        </div>
+        <script>
+            var app = new Vue({
+                el: '#content',
+                data: {
+                    OfficialUrl: "http://www.ijuzi.net",
+                },
+                methods: {
+                    iosClick: function() {
+                        javascrtpt: window.location.href =
+                            'itms-services://?action=download-manifest&url=https://raw.githubusercontent.com/wufei036/quannengPlayer/master/index/quanneng.plist'
+                    },
+                    iosTrust: function() {
+                        javascrtpt: window.location.href =
+                            'itms-services://?action=download-manifest&url=https://raw.githubusercontent.com/wufei036/quannengPlayer/master/index/quanneng.plist'
+                    },
+                },
+            })
+        </script>
+
+    </body>
+</html>

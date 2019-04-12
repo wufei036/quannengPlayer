@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>电影详情</title>
+        <title>桔子影音</title>
         <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -110,6 +110,7 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="bottomText" v-show="likeList.length > 0"><p>--我是有底线的--</p></div>
                         </div>
                         <!--影片详情-->
                         <div class="Details_all_one mui-hidden">
@@ -188,7 +189,7 @@
                 asyncDirector: '',
                 asyncMainActor: '',
                 asyncPlayTotal: 0,
-                asyncVideoSynopsis: 0,
+                asyncVideoSynopsis: null,
                 mescroll: "",
                 position: 0,
                 showPosition: true,

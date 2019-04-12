@@ -1,46 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
-<head id="head">
-    <meta charset=UTF-8"UTF-8">
-    <title></title>
-    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
-    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <link rel="stylesheet" href="../css/ios/app.min.css" tppabs="http://quannengplayer.com/css/ios/app.min.css" media="all">
-    <link rel="stylesheet" href="../css/download.css" tppabs="http://quannengplayer.com/css/ios/app.min.css" media="all">
-    <script src="../js/vue.min.js" type="text/javascript" charset="utf-8"></script>
-</head>
-<body>
-    <div id="content" style="position:relative;" >
-        <img src="../img/home_bg.jpg" />
-        <div class="downBtn" >
-            <img class="iosDownload" src="../img/IOS_btn.png" @click="iosClick"/>
-            <img class="androidDownload" src="../img/android_btn.png" style="margin-left: 1rem;" @click="androidClick"/>
+    <head id="head">
+        <meta charset=UTF-8"UTF-8">
+        <title>桔子影音</title>
+        <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0; name=" viewport"" />
+        <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <link rel="stylesheet" href="../css/ios/app.min.css" media="all">
+        <link rel="stylesheet" href="../css/download.css" media="all">
+        <link rel="stylesheet" href="../css/mui.min.css" type="text/css" charset="utf-8" />
+        <script src="../js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../js/qrcode.js" type="text/javascript"></script>
+        <script src="../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+    </head>
+    <body>
+        <div id="content" style="position:relative;">
+            <img src="../img/home_bg.jpg" />
+            <div class="downBtn">
+                <img class="iosDownload" src="../img/IOS_btn.png" @click="iosClick" />
+                <img class="androidDownload" src="../img/android_btn.png" style="margin-left: 1rem;" @click="androidClick" />
+            </div>
+            <div class="Official">
+                <a v-if="windowWidth < 450" href="http://www.ijuzi.net">{{OfficialUrl}}</a>
+                <a v-if="windowWidth > 450" href="http://www.ijuzi.net" style="font-size: 2rem;">{{OfficialUrl}}</a>
+            </div>
+            <div class="chatBtn">
+                <img src="../img/chat_btn.png" @click="chatClick" />
+            </div>
+            <div id="qrcode"></div>
         </div>
-        <div class="chatBtn">
-            <img src="../img/chat_btn.png" @click="chatClick"/>
-        </div>
-    </div>
-<script>
-    var app = new Vue({
-     el:'#content',
-     data:{},
-     methods:{
-         iosClick: function(){
-             javascrtpt:window.location.href='itms-services://?action=download-manifest&url=https://raw.githubusercontent.com/wufei036/quannengPlayer/master/index/quanneng.plist'
-         },
-         androidClick:function(){
-              javascrtpt:window.location.href='https://github.com/wufei036/quannengPlayer/raw/master/index/player.apk'
-         },
-         chatClick: function(){
-              alert("chatClick")
-         }
-     },
-     mounted: {}
-    })
-   
-</script>
-
-</body>
+        <script>
+            var app = new Vue({
+                el: '#content',
+                data: {
+                    OfficialUrl: "http://www.ijuzi.net",
+                    windowWidth: 0,
+                },
+                methods: {
+                    iosClick: function() {
+                        mui.openWindow({
+                            url: 'iosDownload.html',
+                            id: 'iosDownload.html'
+                        })
+                    },
+                    androidClick: function() {
+                        javascrtpt: window.location.href =
+                            'https://github.com/wufei036/quannengPlayer/raw/master/index/player.apk'
+                    },
+                    chatClick: function() {
+                         window.location.href = "pt://resolve?domain=ijuzi"; /*打开app的协议*/
+                        var iosDownload = "https://itunes.apple.com/us/app/potato-chat/id1204726898";
+                        var androidDownload  = "https://download.ptcloud.info/android/potato.apk";
+                        that.clearTimer();
+                        if (mui.os.ios) {
+                            that.timeHandler = window.setTimeout(function() {plus.runtime.openURL(iosDownload);}, 1000);
+                        } else {
+                            that.timeHandler = window.setTimeout(function() {plus.runtime.openURL(androidDownload);}, 2200);
+                        }
+                    },
+                    makeCode: function() {
+                        that = this;
+                        qrcode.makeCode(this.OfficialUrl);
+                    },
+                },
+                mounted() {
+                    that = this;
+                    var qrcode = new QRCode(document.getElementById("qrcode"), {
+                        text: that.OfficialUrl,
+                        width: 128, //生成的二维码的宽度
+                        height: 128, //生成的二维码的高度
+                        colorDark: "#000000", // 生成的二维码的深色部分
+                        colorLight: "#ffffff", //生成二维码的浅色部分
+                    });
+                    window.addEventListener('load', function() {
+                        that.windowWidth = window.innerWidth
+                        window.addEventListener('resize', function() {
+                            that.windowWidth = window.innerWidth
+                        })
+                    })
+                }
+            })
+        </script>
+    </body>
 </html>
