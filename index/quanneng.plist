@@ -16,14 +16,14 @@
 			</array>
 			<key>metadata</key>
 			<dict>
+				<key>subtitle</key>
+				<string>风格化卡刷卡上厕所</string>
 				<key>bundle-identifier</key>
 				<string>bizsmart</string>
 				<key>bundle-version</key>
 				<string>1.0</string>
 				<key>kind</key>
 				<string>software</string>
-                <key>subtitle</key>
-                <string>的法国皇家空军和规范的风格</string>
 				<key>title</key>
 				<string>全能影音</string>
 			</dict>
